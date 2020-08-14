@@ -15,55 +15,26 @@ class WeatherServiceTest {
 
     @Test
     void shouldIsWarmReturnTrueWhenTemperatureIsMoreThan20() {
-        // given
-        double inputTemp = 20;
 
-        // when
-        boolean result = sut.isWarm(inputTemp);
-
-        // then
-        assertTrue(result);
     }
 
     @Test
     void shouldIsWarmReturnFalseWhenTemperatureIsLessThan20() {
-        // given
-        double inputTemp = 10;
 
-        // when
-        boolean result = sut.isWarm(inputTemp);
-
-        // then
-        assertFalse(result);
     }
 
     @Test
     void shouldIsColdReturnTrueWhenTemperatureIsLessThan5() {
-        // given
-        double inputTemp = 5;
 
-        // when
-        boolean result = sut.isCold(inputTemp);
-
-        // then
-        assertThat("should be true when it's cold", result, is(equalTo(true)));
     }
 
     @Test
     void shouldThrowExceptionWhenCityDoesntExist() throws IllegalAccessException {
-        // given
-        String city = "Katowice";
 
-        // when
-        Exception ex = assertThrows(IllegalStateException.class,
-                () -> sut.getTemperature(city));
-
-        // then
-        assertThat(ex.getMessage(), is(equalTo("ss")));
     }
 
     @Test
     void shouldHaveAllCitiesInMap() {
-        assertThat(sut.getData(), hasKey(IsCapitalCity.capitalCity()));
+
     }
 }
