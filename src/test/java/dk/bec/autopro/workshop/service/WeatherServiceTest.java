@@ -1,5 +1,6 @@
 package dk.bec.autopro.workshop.service;
 
+import dk.bec.autopro.workshop.connector.WeatherServerConnector;
 import dk.bec.autopro.workshop.matchers.IsCapitalCity;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WeatherServiceTest {
 
-    private WeatherService sut = new WeatherService();
+    private WeatherService sut = new WeatherService(new WeatherServerConnector());
 
     @Test
     void shouldIsWarmReturnTrueWhenTemperatureIsMoreThan20() {
@@ -29,12 +30,17 @@ class WeatherServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenCityDoesntExist() throws IllegalAccessException {
+    void shouldThrowExceptionWhenCityDoesntExist() {
 
     }
 
     @Test
     void shouldHaveAllCitiesInMap() {
+
+    }
+
+    @Test
+    void testIsWarmMatcher() {
 
     }
 }

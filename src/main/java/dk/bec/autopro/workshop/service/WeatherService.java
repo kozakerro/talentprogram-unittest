@@ -1,5 +1,6 @@
 package dk.bec.autopro.workshop.service;
 
+import dk.bec.autopro.workshop.connector.WeatherServerConnector;
 import dk.bec.autopro.workshop.model.MeasurementHistory;
 import dk.bec.autopro.workshop.model.MeasurementInput;
 
@@ -8,8 +9,10 @@ import java.util.Map;
 
 public class WeatherService {
     private Map<String, MeasurementHistory> data;
+    private WeatherServerConnector serverConnector;
 
-    public WeatherService() {
+    public WeatherService(WeatherServerConnector serverConnector) {
+        this.serverConnector = serverConnector;
         data = new HashMap<>();
         data.put("Warsaw", new MeasurementHistory());
         data.put("Cracow", new MeasurementHistory());
@@ -26,6 +29,15 @@ public class WeatherService {
             throw new IllegalStateException("City " + city + " doesn't exist");
         }
         return measurementHistory.getCurrentTemperature();
+    }
+
+    public double getTemperatureFromServerInKelvins(String city) {
+        return serverConnector.fetchTemperatureInKelvins(city);
+    }
+
+    public double getTemperatureFromServerInCelsius(String city) {
+        double tempInKelvins = serverConnector.fetchTemperatureInKelvins(city);
+        return (tempInKelvins - 32) * 5/9;
     }
 
     public double getAverageTemperature(String city) throws IllegalStateException {
