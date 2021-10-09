@@ -43,4 +43,9 @@ class WeatherServiceTest {
     void testIsWarmMatcher() {
 
     }
+
+    @Test
+    void shouldFetchProperTempInKelvinsFromServer() {
+
+    }
 }
