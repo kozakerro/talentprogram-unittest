@@ -2,17 +2,28 @@ package dk.bec.autopro.workshop.service;
 
 import dk.bec.autopro.workshop.connector.WeatherServerConnector;
 import dk.bec.autopro.workshop.matchers.IsCapitalCity;
+import dk.bec.autopro.workshop.matchers.IsWarmTemperature;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasKey;
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@ExtendWith(MockitoExtension.class)
 class WeatherServiceTest {
 
-    private WeatherService sut = new WeatherService(new WeatherServerConnector());
+    @Mock
+    private WeatherServerConnector weatherServerConnector;
+
+    @InjectMocks
+    private WeatherService sut = new WeatherService(weatherServerConnector);
 
     @Test
     void shouldIsWarmReturnTrueWhenTemperatureIsMoreThan20() {
@@ -71,6 +82,34 @@ class WeatherServiceTest {
 
     @Test
     void testIsWarmMatcher() {
-        assertThat(sut.getData(), hasKey(IsCapitalCity.capitalCity()));
+        double warmTemperature = 30.0;
+        assertThat(warmTemperature, IsWarmTemperature.warmTemperature());
+    }
+
+    @Test
+    void shouldFetchProperTempInKelvinsFromServer() {
+        // given
+        double temp = 20.0;
+        Mockito.when(weatherServerConnector.fetchTemperatureInKelvins(Mockito.anyString())).thenReturn(temp);
+
+        // when
+        double result = sut.getTemperatureFromServerInKelvins("Paris");
+
+        // then
+        assertEquals(temp, result);
+    }
+
+    @Test
+    void shouldServerConnectorBeCalledThreeTimes() {
+        // given
+        double temp = 15.0;
+        String city = "Cracow";
+        Mockito.when(weatherServerConnector.fetchTemperatureInKelvins(Mockito.anyString())).thenReturn(temp);
+
+        // when
+        sut.getAverageTemperatureFromServerInKelvinsInThreeCalls(city);
+
+        // then
+        Mockito.verify(weatherServerConnector, Mockito.times(3)).fetchTemperatureInKelvins(city);
     }
 }
