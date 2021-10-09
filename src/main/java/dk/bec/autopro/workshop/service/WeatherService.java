@@ -35,6 +35,13 @@ public class WeatherService {
         return serverConnector.fetchTemperatureInKelvins(city);
     }
 
+    public double getAverageTemperatureFromServerInKelvinsInThreeCalls(String city) {
+        double sum = ( serverConnector.fetchTemperatureInKelvins(city)
+                + serverConnector.fetchTemperatureInKelvins(city)
+                + serverConnector.fetchTemperatureInKelvins(city) );
+        return sum / 3;
+    }
+
     public double getTemperatureFromServerInCelsius(String city) {
         double tempInKelvins = serverConnector.fetchTemperatureInKelvins(city);
         return (tempInKelvins - 32) * 5/9;

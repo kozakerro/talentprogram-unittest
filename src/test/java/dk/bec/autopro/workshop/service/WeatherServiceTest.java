@@ -48,4 +48,9 @@ class WeatherServiceTest {
     void shouldFetchProperTempInKelvinsFromServer() {
 
     }
+
+    @Test
+    void shouldServerConnectorBeCalledThreeTimes() {
+
+    }
 }

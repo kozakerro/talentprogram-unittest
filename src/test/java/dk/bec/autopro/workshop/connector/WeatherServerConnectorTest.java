@@ -9,4 +9,8 @@ class WeatherServerConnectorTest {
     @Test
     void shouldFetchTemperatureWithinTimeLimit() {
     }
+
+    @Test
+    void testWithMockedConnector() {
+    }
 }
